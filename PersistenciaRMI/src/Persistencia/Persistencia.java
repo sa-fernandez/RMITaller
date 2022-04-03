@@ -7,6 +7,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Persistencia extends UnicastRemoteObject implements IPersistencia {
 
@@ -16,6 +17,7 @@ public class Persistencia extends UnicastRemoteObject implements IPersistencia {
     public Persistencia(String name) throws RemoteException {
         super();
         try{
+            connectDatabase();
             registry = LocateRegistry.createRegistry(1099);
             registry.rebind(name, this);
         } catch(Exception e) {
@@ -23,10 +25,9 @@ public class Persistencia extends UnicastRemoteObject implements IPersistencia {
         }
     }
 
-    @Override
-    public void connectDatabase() throws RemoteException {
+    public void connectDatabase() {
         try{
-            this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Test?user=root&password=123Mateo*");
+            this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test?user=root&password=123Mateo*");
         }catch(Exception e) {
             e.printStackTrace();
         }
@@ -59,7 +60,7 @@ public class Persistencia extends UnicastRemoteObject implements IPersistencia {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from Profesor");
             while(resultSet.next()){
-                if(idProfesor.equals(resultSet.getString("idEstudiante"))) {
+                if(idProfesor.equals(resultSet.getString("idProfesor"))) {
                     if (contrasena.equals(resultSet.getString("contrasena"))) {
                         result = true;
                     }
@@ -111,4 +112,56 @@ public class Persistencia extends UnicastRemoteObject implements IPersistencia {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public double consultarNota(String idAsignatura, String idAlumno) throws RemoteException{
+        double nota = -1.0;
+        try{
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from NotaXEstudiante");
+            while(resultSet.next()){
+                if(resultSet.getString("Estudiante_idEstudiante").equals(idAlumno) && resultSet.getString("Asignatura_idAsignatura").equals(idAsignatura))
+                nota = resultSet.getDouble("nota");
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return nota;
+    }
+
+    @Override
+    public ArrayList<String> asignaturasEstudiante(String idEstudiante) throws RemoteException{
+        ArrayList<String> asignaturas = new ArrayList<>();
+        try{
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from NotaXEstudiante ");
+            while(resultSet.next()){
+                if(resultSet.getString("Estudiante_idEstudiante").equals(idEstudiante)) {
+                    asignaturas.add(resultSet.getString("Asignatura_idAsignatura"));
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return asignaturas;
+    }
+
+    @Override
+    public ArrayList<String> asignaturasProfesor(String idProfesor) throws RemoteException{
+        ArrayList<String> asignaturas = new ArrayList<>();
+        try{
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from Asignatura");
+            while(resultSet.next()){
+                if(resultSet.getString("Profesor_idProfesor").equals(idProfesor)) {
+                    asignaturas.add(resultSet.getString("idAsignatura"));
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return asignaturas;
+    }
+
+
 }

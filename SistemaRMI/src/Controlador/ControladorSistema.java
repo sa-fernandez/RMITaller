@@ -2,8 +2,6 @@ package Controlador;
 
 import Interface.IPersistencia;
 
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
@@ -14,9 +12,11 @@ public class ControladorSistema {
 
     public ControladorSistema(String host){
         try {
+            System.out.println("Binding rmi://" + host + ":" + 1099 + "/PersistenciaRMI...");
             Registry registry = LocateRegistry.getRegistry(host, 1099);
             iPersistencia = (IPersistencia) registry.lookup("PersistenciaRMI");
-        } catch(Exception e){
+            System.out.println("[Server PersistenciaRMI] : ON");
+        } catch(Exception e) {
             System.err.println("System exception" + e);
         }
     }

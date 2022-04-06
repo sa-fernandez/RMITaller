@@ -1,6 +1,7 @@
 package Controlador;
 
 import Interface.IPersistencia;
+import Modelo.Nota;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -39,36 +40,54 @@ public class ControladorSistema {
         }
     }
 
-    public void introducirNota(String idAsignatura, String idAlumno, double nota) {
+    public void introducirNota(String idAsignatura, String idAlumno, String idNota, double nota) {
         try{
-            iPersistencia.introducirNota(idAsignatura, idAlumno, nota);
+            iPersistencia.introducirNota(idAsignatura, idNota, idAlumno, nota);
         } catch(Exception e) {
             System.err.println("System exception" + e);
         }
     }
 
-    public void borrarNota(String idAsignatura, String idAlumno){
+    public void borrarNota(String idAsignatura, String idNota, String idAlumno){
         try{
-            iPersistencia.borrarNota(idAsignatura, idAlumno);
+            iPersistencia.borrarNota(idAsignatura, idNota, idAlumno);
         } catch(Exception e) {
             System.err.println("System exception" + e);
         }
     }
 
-    public void modificarNota(String idAsignatura, String idAlumno, double nota){
+    public void modificarNota(String idAsignatura, String idAlumno, String idNota, double nota){
         try{
-            iPersistencia.modificarNota(idAsignatura, idAlumno, nota);
+            iPersistencia.modificarNota(idAsignatura, idAlumno, idNota, nota);
         } catch(Exception e) {
             System.err.println("System exception" + e);
         }
     }
 
-    public double consultarNota (String idAsignatura, String idAlumno ){
+    public Nota consultarNota (String idAsignatura, String idAlumno, String idNota){
         try{
-            return iPersistencia.consultarNota(idAsignatura, idAlumno );
+            return iPersistencia.consultarNota(idAsignatura, idAlumno, idNota );
         } catch(Exception e) {
             System.err.println("System exception" + e);
-            return -1;
+            return null;
+        }
+    }
+
+    public ArrayList<Nota> consultarNotaXAsignatura (String idAsignatura, String idAlumno){
+        try{
+            return iPersistencia.consultarNotasXAsignatura(idAsignatura, idAlumno);
+        } catch(Exception e) {
+            System.err.println("System exception" + e);
+            return null;
+        }
+    }
+
+    public ArrayList<Nota> consultarNotas (String idAlumno){
+        try{
+            return iPersistencia.consultarNotas(idAlumno);
+        } catch(Exception e) {
+            System.err.println("System exception" + e);
+            return null;
         }
     }
 

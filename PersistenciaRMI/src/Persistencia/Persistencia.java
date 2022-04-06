@@ -1,6 +1,7 @@
 package Persistencia;
 
 import Interface.IPersistencia;
+import Modelo.Nota;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -8,6 +9,8 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Persistencia extends UnicastRemoteObject implements IPersistencia {
 
@@ -73,13 +76,14 @@ public class Persistencia extends UnicastRemoteObject implements IPersistencia {
     }
 
     @Override
-    public void introducirNota(String idAsignatura, String idAlumno, double nota) throws RemoteException {
+    public void introducirNota(String idAsignatura, String idAlumno, String idNota, double nota) throws RemoteException {
         try{
-            String query = "insert into NotaXEstudiante values(?,?,?)";
+            String query = "insert into Nota values(?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, idAlumno);
-            preparedStatement.setString(2, idAsignatura);
-            preparedStatement.setDouble(3, nota);
+            preparedStatement.setString(1, idNota);
+            preparedStatement.setDouble(2, nota);
+            preparedStatement.setString(3, idAlumno);
+            preparedStatement.setString(4, idAsignatura);
             preparedStatement.executeUpdate();
         }catch(Exception e){
             e.printStackTrace();
@@ -87,12 +91,13 @@ public class Persistencia extends UnicastRemoteObject implements IPersistencia {
     }
 
     @Override
-    public void borrarNota(String idAsignatura, String idAlumno) throws RemoteException {
+    public void borrarNota(String idAsignatura, String idAlumno, String idNota) throws RemoteException {
         try{
-            String query = "delete from NotaXEstudiante where Estudiante_idEstudiante = ? and Asignatura_idAsignatura = ?";
+            String query = "delete from Nota where estudiantexasignatura_Estudiante_idEstudiante = ? and estudiantexasignatura_Asignatura_idAsignatura = ? and idNota = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, idAlumno);
             preparedStatement.setString(2, idAsignatura);
+            preparedStatement.setString(3, idNota);
             preparedStatement.executeUpdate();
         }catch(Exception e){
             e.printStackTrace();
@@ -100,13 +105,14 @@ public class Persistencia extends UnicastRemoteObject implements IPersistencia {
     }
 
     @Override
-    public void modificarNota(String idAsignatura, String idAlumno, double nota) throws RemoteException {
+    public void modificarNota(String idAsignatura, String idAlumno, String idNota, double nota) throws RemoteException {
         try{
-            String query = "update NotaXEstudiante set nota = ? where Estudiante_idEstudiante = ? and Asignatura_idAsignatura = ?";
+            String query = "update Nota set valor = ? where estudiantexasignatura_Estudiante_idEstudiante = ? and estudiantexasignatura_Asignatura_idAsignatura = ? and idNota = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setDouble(1, nota);
             preparedStatement.setString(2, idAlumno);
             preparedStatement.setString(3, idAsignatura);
+            preparedStatement.setString(4, idNota);
             preparedStatement.executeUpdate();
         }catch(Exception e){
             e.printStackTrace();
@@ -114,14 +120,17 @@ public class Persistencia extends UnicastRemoteObject implements IPersistencia {
     }
 
     @Override
-    public double consultarNota(String idAsignatura, String idAlumno) throws RemoteException{
-        double nota = -1.0;
+    public Nota consultarNota(String idAsignatura, String idAlumno, String idNota) throws RemoteException{
+        Nota nota = new Nota();
         try{
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from NotaXEstudiante");
+            ResultSet resultSet = statement.executeQuery("select * from Nota");
             while(resultSet.next()){
-                if(resultSet.getString("Estudiante_idEstudiante").equals(idAlumno) && resultSet.getString("Asignatura_idAsignatura").equals(idAsignatura))
-                nota = resultSet.getDouble("nota");
+                if(resultSet.getString("estudiantexasignatura_Estudiante_idEstudiante").equals(idAlumno) && resultSet.getString("estudiantexasignatura_Asignatura_idAsignatura").equals(idAsignatura) && resultSet.getString("idNota").equals(idNota)) {
+                    nota.setValor(resultSet.getDouble("valor"));
+                    nota.setIdNota(resultSet.getString("idNota"));
+                    nota.setIdAsignatura(resultSet.getString("estudiantexasignatura_Asignatura_idAsignatura"));
+                }
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -130,11 +139,47 @@ public class Persistencia extends UnicastRemoteObject implements IPersistencia {
     }
 
     @Override
+    public ArrayList<Nota> consultarNotasXAsignatura(String idAsignatura, String idAlumno) throws RemoteException{
+        ArrayList<Nota> notas = new ArrayList<>();
+        try{
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from Nota");
+            while(resultSet.next()){
+                if(resultSet.getString("estudiantexasignatura_Estudiante_idEstudiante").equals(idAlumno) && resultSet.getString("estudiantexasignatura_Asignatura_idAsignatura").equals(idAsignatura)) {
+                    Nota nota = new Nota(resultSet.getString("idNota"), resultSet.getString("estudiantexasignatura_Asignatura_idAsignatura"), resultSet.getDouble("valor"));
+                    notas.add(nota);
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return notas;
+    }
+
+    @Override
+    public ArrayList<Nota> consultarNotas(String idAlumno) throws RemoteException{
+        ArrayList<Nota> notas = new ArrayList<>();
+        try{
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from Nota");
+            while(resultSet.next()){
+                if(resultSet.getString("estudiantexasignatura_Estudiante_idEstudiante").equals(idAlumno)) {
+                    Nota nota = new Nota(resultSet.getString("idNota"), resultSet.getString("estudiantexasignatura_Asignatura_idAsignatura"), resultSet.getDouble("valor"));
+                    notas.add(nota);
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return notas;
+    }
+
+    @Override
     public ArrayList<String> asignaturasEstudiante(String idEstudiante) throws RemoteException{
         ArrayList<String> asignaturas = new ArrayList<>();
         try{
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from NotaXEstudiante ");
+            ResultSet resultSet = statement.executeQuery("select * from EstudianteXAsignatura ");
             while(resultSet.next()){
                 if(resultSet.getString("Estudiante_idEstudiante").equals(idEstudiante)) {
                     asignaturas.add(resultSet.getString("Asignatura_idAsignatura"));

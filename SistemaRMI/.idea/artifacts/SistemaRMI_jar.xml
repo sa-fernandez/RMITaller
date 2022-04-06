@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SistemaRMI:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SistemaRMI_jar</output-path>
+    <root id="archive" name="SistemaRMI.jar">
+      <element id="module-output" name="SistemaRMI" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../PersistenciaRMI/out/artifacts/PersistenciaRMI_jar/PersistenciaRMI.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

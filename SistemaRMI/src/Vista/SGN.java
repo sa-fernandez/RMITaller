@@ -47,11 +47,13 @@ public class SGN {
                         for (int i = 0; i < asignaturas.size(); i++) {
                             System.out.println(i + 1 + ". " + asignaturas.get(i));
                         }
+                        System.out.println();
                         System.out.print("Digite el numero de la asignatura a consultar nota: ");
                         int num = scI.nextInt();
                         System.out.println("Asignatura " + asignaturas.get(num - 1) + " escogida");
                         System.out.print("(P -> Consultar todas las notas de la asignatura|| E -> Consultar nota en especifico de la asignatura) > ");
                         opc = scS.nextLine();
+                        System.out.println();
                         if(opc.toUpperCase().equals("P")) {
                             System.out.println("Sus notas son las siguientes");
                             ArrayList<Nota> notas = controladorSistema.consultarNotaXAsignatura(asignaturas.get(num - 1), id);
@@ -68,11 +70,13 @@ public class SGN {
                     }else{
                         System.out.println("Opcion invalida, intentelo nuevamente");
                     }
+                    System.out.println();
                     System.out.print("(S -> Seguir || C -> Cerrar sesion) > ");
                     opc = scS.nextLine();
                     if (opc.toUpperCase().equals("C")) {
                         est = false;
                     }
+                    System.out.println();
                 }while(est);
             } else if (controladorSistema.verificarProfesor(id, contrasena)) {
                 boolean pro = true;
@@ -84,6 +88,7 @@ public class SGN {
                     for (int i = 0; i < asignaturas.size(); i++) {
                         System.out.println(i + 1 + ". " + asignaturas.get(i));
                     }
+                    System.out.println();
                     System.out.print("Digite el numero de la asignatura: ");
                     int nAsignatura = scI.nextInt();
                     System.out.println("Asignatura " + asignaturas.get(nAsignatura - 1) + " escogida");
@@ -91,41 +96,44 @@ public class SGN {
                     String idEst = scS.nextLine();
                     System.out.print("(I -> Insertar Nota || M -> Modificar Nota || B -> Borrar Nota) > ");
                     String opc = scS.nextLine();
+                    System.out.println();
                     if(opc.toUpperCase().equals("I")){
                         System.out.print("Ingrese el tipo de nota del estudiante: ");
                         String idNotaI = scS.nextLine();
                         System.out.print("Ingrese la nota del estudiante: ");
                         double notaI = scD.nextDouble();
-                        controladorSistema.introducirNota(asignaturas.get(nAsignatura), idNotaI,idEst, notaI);
+                        controladorSistema.introducirNota(asignaturas.get(nAsignatura - 1), idNotaI,idEst, notaI);
                     }else if(opc.toUpperCase().equals("M")){
                         System.out.print("Ingrese el tipo de nota del estudiante: ");
                         String idNotaM = scS.nextLine();
                         System.out.print("Ingrese la nueva nota del estudiante: ");
                         double notaM = scD.nextDouble();
-                        controladorSistema.modificarNota(asignaturas.get(nAsignatura), idEst, idNotaM, notaM);
+                        controladorSistema.modificarNota(asignaturas.get(nAsignatura - 1), idEst, idNotaM, notaM);
                     }else if(opc.toUpperCase().equals("B")){
                         System.out.print("Ingrese el tipo de nota del estudiante: ");
                         String idNotaD = scS.nextLine();
-                        controladorSistema.borrarNota(asignaturas.get(nAsignatura), idNotaD,idEst);
+                        controladorSistema.borrarNota(asignaturas.get(nAsignatura - 1), idNotaD,idEst);
                         System.out.println("Nota eliminada correctamente");
                     }else{
                         System.out.println("Opcion invalida");
                     }
-                    System.out.println("(S -> Seguir || C -> Cerrar sesion) > ");
+                    System.out.println();
+                    System.out.print("(S -> Seguir || C -> Cerrar sesion) > ");
                     String opt = scS.nextLine();
                     if(opt.toUpperCase().equals("C")){
                         pro = false;
                     }
+                    System.out.println();
                 }while(pro);
             } else {
                 System.out.println("INGRESO INVALIDO, INTENTE NUEVAMENTE");
             }
-            System.out.print("Desea cerrar la aplicacion?: ");
-            System.out.print("(S -> Si || N -> No) > ");
+            System.out.print("(S -> Salir || C -> Continuar con otra operacion) > ");
             String opc = scS.nextLine();
             if(opc.toUpperCase().equals("S")){
                 seguir = false;
             }
+            System.out.println();
         }while(seguir);
 
     }

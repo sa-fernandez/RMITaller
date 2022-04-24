@@ -51,15 +51,15 @@ public class ControladorSistema {
 
     public void introducirNota(String idAsignatura, String idAlumno, String idNota, double nota) {
         try{
-            iPersistencia.introducirNota(idAsignatura, idNota, idAlumno, nota);
+            iPersistencia.introducirNota(idAsignatura, idAlumno, idNota, nota);
         } catch(Exception e) {
             System.err.println("System exception" + e);
         }
     }
 
-    public void borrarNota(String idAsignatura, String idNota, String idAlumno){
+    public void borrarNota(String idAsignatura, String idAlumno, String idNota){
         try{
-            iPersistencia.borrarNota(idAsignatura, idNota, idAlumno);
+            iPersistencia.borrarNota(idAsignatura, idAlumno, idNota);
         } catch(Exception e) {
             System.err.println("System exception" + e);
         }

@@ -77,6 +77,7 @@ public class SGN {
                         String opt = scS.nextLine();
                         if (opt.toUpperCase().equals("C")) {
                             est = false;
+                            terminar = false;
                         }else if(opt.toUpperCase().equals("S")){
                             terminar = false;
                         }else{
@@ -134,7 +135,7 @@ public class SGN {
                         String idNotaI = scS.nextLine();
                         System.out.print("Ingrese la nota del estudiante: ");
                         double notaI = scD.nextDouble();
-                        controladorSistema.introducirNota(asignaturas.get(nAsignatura - 1), idNotaI, idEst, notaI);
+                        controladorSistema.introducirNota(asignaturas.get(nAsignatura - 1), idEst, idNotaI, notaI);
                         System.out.println("Nota correctamente introducida");
                     }else if(opc.toUpperCase().equals("M")){
                         System.out.print("Ingrese el tipo de nota del estudiante: ");
@@ -146,7 +147,7 @@ public class SGN {
                     }else if(opc.toUpperCase().equals("B")){
                         System.out.print("Ingrese el tipo de nota del estudiante: ");
                         String idNotaD = scS.nextLine();
-                        controladorSistema.borrarNota(asignaturas.get(nAsignatura - 1), idNotaD, idEst);
+                        controladorSistema.borrarNota(asignaturas.get(nAsignatura - 1), idEst, idNotaD);
                         System.out.println("Nota correctamente eliminada");
                     }else{
                         System.out.println("Opcion invalida");
@@ -157,6 +158,7 @@ public class SGN {
                         System.out.print("(S -> Seguir || C -> Cerrar sesion) > ");
                         String opt = scS.nextLine();
                         if (opt.toUpperCase().equals("C")) {
+                            terminar = false;
                             pro = false;
                         }else if(opt.toUpperCase().equals("S")){
                             terminar = false;
@@ -175,6 +177,7 @@ public class SGN {
                 String opt = scS.nextLine();
                 if (opt.toUpperCase().equals("C")) {
                     seguir = false;
+                    terminar = false;
                 }else if(opt.toUpperCase().equals("S")){
                     terminar = false;
                 }else{

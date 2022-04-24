@@ -5,7 +5,6 @@ import Modelo.Nota;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Map;
 
 public interface IPersistencia extends Remote {
 

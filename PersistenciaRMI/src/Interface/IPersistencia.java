@@ -9,8 +9,9 @@ import java.util.Map;
 
 public interface IPersistencia extends Remote {
 
-    public boolean verificarEstudiante(String idEstudiante, String contrasena) throws RemoteException;
-    public boolean verificarProfesor(String idProfesor, String contrasena) throws RemoteException;
+    public boolean autenticarEstudiante(String idEstudiante, String contrasena) throws RemoteException;
+    public boolean verificarEstudiante(String idEstudiante) throws RemoteException;
+    public boolean autenticarProfesor(String idProfesor, String contrasena) throws RemoteException;
     public void introducirNota(String idAsignatura, String idAlumno, String idNota, double nota) throws RemoteException;
     public void borrarNota(String idAsignatura, String idAlumno, String idNota) throws RemoteException;
     public void modificarNota(String idAsignatura, String idAlumno, String idNota, double nota) throws RemoteException;

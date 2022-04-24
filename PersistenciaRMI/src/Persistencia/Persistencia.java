@@ -30,14 +30,14 @@ public class Persistencia extends UnicastRemoteObject implements IPersistencia {
 
     public void connectDatabase() {
         try{
-            this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test?user=root&password=123Mateo*");
+            this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test?user=root&password=123Ferchito*");
         }catch(Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public boolean verificarEstudiante(String idEstudiante, String contrasena) throws RemoteException {
+    public boolean autenticarEstudiante(String idEstudiante, String contrasena) throws RemoteException {
         boolean result = false;
         try{
             Statement statement = connection.createStatement();
@@ -57,7 +57,25 @@ public class Persistencia extends UnicastRemoteObject implements IPersistencia {
     }
 
     @Override
-    public boolean verificarProfesor(String idProfesor, String contrasena) throws RemoteException {
+    public boolean verificarEstudiante(String idEstudiante) throws RemoteException {
+        boolean result = false;
+        try{
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from Estudiante");
+            while(resultSet.next()){
+                if(idEstudiante.equals(resultSet.getString("idEstudiante"))) {
+                    result = true;
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
+
+    }
+
+    @Override
+    public boolean autenticarProfesor(String idProfesor, String contrasena) throws RemoteException {
         boolean result = false;
         try{
             Statement statement = connection.createStatement();

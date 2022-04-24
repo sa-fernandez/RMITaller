@@ -22,18 +22,27 @@ public class ControladorSistema {
         }
     }
 
-    public boolean verificarEstudiante(String idEstudiante, String contrasena){
+    public boolean autenticarEstudiante(String idEstudiante, String contrasena){
         try {
-            return iPersistencia.verificarEstudiante(idEstudiante, contrasena);
+            return iPersistencia.autenticarEstudiante(idEstudiante, contrasena);
         } catch(Exception e) {
             System.err.println("System exception" + e);
             return false;
         }
     }
 
-    public boolean verificarProfesor(String idProfesor, String contrasena) {
+    public boolean verificarEstudiante(String idEstudiante){
         try{
-            return iPersistencia.verificarProfesor(idProfesor, contrasena);
+            return iPersistencia.verificarEstudiante(idEstudiante);
+        }catch (Exception e){
+            System.err.println("System exception" + e);
+            return false;
+        }
+    }
+
+    public boolean autenticarProfesor(String idProfesor, String contrasena) {
+        try{
+            return iPersistencia.autenticarProfesor(idProfesor, contrasena);
         } catch(Exception e) {
             System.err.println("System exception" + e);
             return false;

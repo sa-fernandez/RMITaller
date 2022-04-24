@@ -1,15 +1,15 @@
 use test;
 
-insert into Estudiante values ('10029327', 'siuuuUuwuU');
+insert into Estudiante values ('10029327', 'k86cascff');
 insert into Estudiante values ('10087700', 'e0asjc8sa');
-insert into Estudiante values ('10092887', 'flexin090');
-insert into Estudiante values ('10027210', 'larosalia');
-insert into Estudiante values ('10077721', 'bichomidios');
+insert into Estudiante values ('10092887', 'h15fgerge');
+insert into Estudiante values ('10027210', 'b14wded21');
+insert into Estudiante values ('10077721', 'estudiante01');
 
-insert into Profesor values ('990231', 'socratesXD');
-insert into Profesor values ('990103', 'fibonacciA');
-insert into Profesor values ('990237', 'cristoRey');
-insert into Profesor values ('990832', 'beyonce:v');
+insert into Profesor values ('990231', 'isd2022');
+insert into Profesor values ('990103', 'asderina');
+insert into Profesor values ('990237', 'leoml');
+insert into Profesor values ('990832', 'MONTES');
 
 insert into Asignatura values ('Filosofia', '990231');
 insert into Asignatura values ('Calculo Vectorial', '990103');
@@ -37,10 +37,6 @@ insert into EstudianteXAsignatura values ('10077721', 'Calculo Vectorial');
 insert into EstudianteXAsignatura values ('10077721', 'Base de datos');
 insert into EstudianteXAsignatura values ('10077721', 'Comunicaciones y Redes');
 
-select * from EstudianteXAsignatura;
-
 insert into Nota values('Parcial1', 4.6, '10077721', 'Calculo Vectorial');
 insert into Nota values('Parcial2', 4.4, '10077721', 'Calculo Vectorial');
 insert into Nota values('Parcial1', 3.8, '10077721', 'Base de datos');
-
-select * from Nota;

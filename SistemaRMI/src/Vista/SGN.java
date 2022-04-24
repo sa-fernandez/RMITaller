@@ -71,12 +71,19 @@ public class SGN {
                         System.out.println("Opcion invalida, intentelo nuevamente");
                     }
                     System.out.println();
-                    System.out.print("(S -> Seguir || C -> Cerrar sesion) > ");
-                    opc = scS.nextLine();
-                    if (opc.toUpperCase().equals("C")) {
-                        est = false;
-                    }
-                    System.out.println();
+                    boolean terminar = true;
+                    do {
+                        System.out.print("(S -> Seguir || C -> Cerrar sesion) > ");
+                        String opt = scS.nextLine();
+                        if (opt.toUpperCase().equals("C")) {
+                            est = false;
+                        }else if(opt.toUpperCase().equals("S")){
+                            terminar = false;
+                        }else{
+                            System.out.println("Opción incorrecta");
+                        }
+                        System.out.println();
+                    }while(terminar);
                 }while(est);
             } else if (controladorSistema.autenticarProfesor(id, contrasena)) {
                 boolean pro = true;
@@ -145,22 +152,36 @@ public class SGN {
                         System.out.println("Opcion invalida");
                     }
                     System.out.println();
-                    System.out.print("(S -> Seguir || C -> Cerrar sesion) > ");
-                    String opt = scS.nextLine();
-                    if(opt.toUpperCase().equals("C")){
-                        pro = false;
-                    }
-                    System.out.println();
+                    boolean terminar = true;
+                    do {
+                        System.out.print("(S -> Seguir || C -> Cerrar sesion) > ");
+                        String opt = scS.nextLine();
+                        if (opt.toUpperCase().equals("C")) {
+                            pro = false;
+                        }else if(opt.toUpperCase().equals("S")){
+                            terminar = false;
+                        }else{
+                            System.out.println("Opción incorrecta");
+                        }
+                        System.out.println();
+                    }while(terminar);
                 }while(pro);
             } else {
                 System.out.println("INGRESO INVALIDO, INTENTE NUEVAMENTE");
             }
-            System.out.print("(S -> Salir || C -> Continuar con otra operacion) > ");
-            String opc = scS.nextLine();
-            if(opc.toUpperCase().equals("S")){
-                seguir = false;
-            }
-            System.out.println();
+            boolean terminar = true;
+            do {
+                System.out.print("(S -> Seguir || C -> Cerrar sesion) > ");
+                String opt = scS.nextLine();
+                if (opt.toUpperCase().equals("C")) {
+                    seguir = false;
+                }else if(opt.toUpperCase().equals("S")){
+                    terminar = false;
+                }else{
+                    System.out.println("Opción incorrecta");
+                }
+                System.out.println();
+            }while(terminar);
         }while(seguir);
 
     }
